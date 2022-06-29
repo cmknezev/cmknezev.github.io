@@ -1,0 +1,24 @@
+---
+title: "2022-06-29-Programming-in-R"
+author: "Collin Knezevich"
+output: github_document
+---
+
+I think the coolest thing we have learned about so far is the `tidyverse` set of packages, and the concepts about programming with them. It's cool that these packages are powerful enough to do a wide variety of things (data manipulation, graphing, etc.), but are still designed with similar syntax so that they can easily be used together. I also like having the ability to pipe functions. It makes your code very intuitive to write and a lot easier to read.   
+
+Here is an example of what you can do using `tidyverse`. We will take the iris dataset from R, perform some data manipulation on it, and create a graph. 
+```{r}
+library(tidyverse)
+
+# add new variable, sort by new variable
+iris <- iris %>% mutate(Sepal.Area = Sepal.Length*Sepal.Width) %>% 
+  arrange(Sepal.Area)
+iris
+```
+```{r}
+# create graph - density plots of new variable Sepal.Area, by species 
+ggplot(data = iris, aes(x = Sepal.Area)) + 
+  geom_density(aes(color = Species)) + 
+  labs(x = "Sepal Area", title = "Density Plots of Sepal Area by Species")
+```
+
