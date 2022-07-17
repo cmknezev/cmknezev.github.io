@@ -1,0 +1,33 @@
+---
+title: "Machine Learning"
+author: "Collin Knezevich"
+date: '2022-07-17'
+output: github_document
+---
+
+Of the machine learning methods we learned about, I found Random Forests to be the most interesting. The idea of a Random Forest model is to fit many different models on many different re-samples of data, then average all predictions from these models. In addition, each model will be fit using a random selection of predictor variables. This is done to reduce variance in the model and correlations between predictions. All of this will result in more accurate predictions.    
+
+# Fitting a Random Forest Model 
+
+We will use the `randomForest` package to fit a model, and we will use the `mtcars` dataset. 
+```{r}
+library(randomForest)
+library(tidyverse)
+
+mtcars <- mtcars 
+```
+
+Now we can build our random forest model, with MPG as our response variable. 
+```{r}
+rfModel <- randomForest(mpg ~ ., data = mtcars, 
+                        mtry = ncol(mtcars)/3, 
+                        ntree = 200, 
+                        importance = TRUE)
+```
+
+Finally, we can evaluate the accuracy of the model by creating predictions from our model, and using them to calculate the root MSE. 
+```{r}
+preds <- predict(rfModel, newdata = select(mtcars, -mpg))
+rmse <- sqrt(mean(preds - mtcars$mpg)^2)
+rmse
+```
